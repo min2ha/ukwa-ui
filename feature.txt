@@ -1,0 +1,3 @@
+Feature list:
+- Filter Dialog
+- Relative Search (using Solr)
