@@ -87,7 +87,7 @@
                 </a></div>
 
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 image-grid-col padding-bottom-20 padding-top-30"> <a href="collection/138" class="collection-link">
-                    <img class="img-responsive border-gray coll-img" alt="News Sites" src="img/collections/collection_138.png"/>
+                    <img class="img-responsive border-gray coll-img" src="img/collections/collection_138.png"/>
                     <h3 class="left padding-bottom-10 padding-left-20 padding-right-20 collection-heading-bold">News Sites</h3>
                     <div class="left padding-bottom-10 padding-left-20 padding-right-20 collection-heading thumbnail">558 <spring:message code="collection.titlecountwithin"/></div>
                 </a></div>
