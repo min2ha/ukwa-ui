@@ -14,7 +14,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: 'master-yoda-WCAG-fight'
+        
       - name: Set up Accesibility Test
         uses: GeopJr/action-accessibility@v2.0.0
         with:
