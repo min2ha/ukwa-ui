@@ -2,22 +2,13 @@ name: CI/CD testing Accessibility - WCAG v2
 on:
   push:
     branches: [ master-yoda-WCAG-fight ]
-  pull_request:
-    types: opened
-    branches: [ master-yoda-WCAG-fight ]
-  issues:
-    types: opened
-  issue_comment:
-    types: created
 
 jobs:
-  build:
+  job_1_name:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: 'master-yoda-WCAG-fight'
+      - uses: actions/checkout@v2
         
       - name: Set up Accesibility Test
         uses: GeopJr/action-accessibility@v2.0.0
