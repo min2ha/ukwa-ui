@@ -1,0 +1,23 @@
+{
+  "standard": "WCAG2AA",
+  "defaults": {
+    "chromeLaunchConfig": {
+      "args": [
+        "--no-sandbox"
+      ],
+      "ignoreHTTPSErrors": false
+    },
+    "includeWarnings": true,
+    "includeNotices": true,
+    "concurrency": 2,
+    "timeout": 100000,
+    "wait": 2000
+  },
+  "urls": [
+    "http://ui:8080/",
+    "http://ui:8080/en/ukwa/about",
+    "http://ui:8080/en/ukwa/contact",
+    "http://ui:8080/en/ukwa/collection",
+    "http://ui:8080/en/ukwa/search"
+  ]
+}

@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.4'
 
 services:
 
@@ -10,10 +10,13 @@ services:
      - SOLR_COLLECTION_SEARCH_PATH=http://solr-collections:8983
      - SOLR_COLLECTION_REQUEST_HANDLER=/solr/collections/select
      - SOLR_FULL_TEXT_SEARCH_PATH=http://solr-search:8983
-     - SOLR_FULL_TEXT_SEARCH_REQUEST_HANDLER=/solr/discovery/select     
+     - SOLR_FULL_TEXT_SEARCH_REQUEST_HANDLER=/solr/discovery/select
     ports:
      - "8080:8080"
-      
+    depends_on:
+      - solr-search
+      - solr-collections
+
   solr-search:
     image: ukwa/webarchive-discovery-solr
     ports:
@@ -23,3 +26,20 @@ services:
     image: ukwa/ukwa-ui-collections-solr
     ports:
       - "8984:8983"
+
+  pa11y:
+    image: outrigger/pa11y:dev
+    container_name: pa11y
+    command: bash -c "while ! curl -s ui:8080 > /dev/null;
+      do
+      echo sleeping;
+      sleep 3;
+      done;
+      cd /code/pa11y && pa11y-ci --config /code/pa11y/config.json --json > report.json"
+    volumes:
+      - ./tests/pa11y/:/code/pa11y/
+    cap_add:
+      - SYS_ADMIN
+    depends_on:
+      - ui
+# testhealth: ["CMD", "curl", "-f", "http://ui:8081/health"]

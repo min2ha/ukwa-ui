@@ -1,0 +1,13 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA"
+  },
+  "urls": [
+    "http://pa11y.org/",
+    "http://pa11y.org/contributing",
+    "https://www.google.com",
+    "http://ui:8080/",
+    "http://127.0.0.1:8080/en/ukwa/about",
+    "http://localhost:8080/en/ukwa/about"
+  ]
+}
