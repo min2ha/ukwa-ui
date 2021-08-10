@@ -28,7 +28,7 @@ services:
       - "8984:8983"
 
   pa11y:
-    image: outrigger/pa11y:dev
+    image: min2ha/docker-pa11y
     container_name: pa11y
     command: bash -c "while ! curl -s ui:8080 > /dev/null;
       do
