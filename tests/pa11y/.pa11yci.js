@@ -8,6 +8,9 @@ module.exports = {
       args: ["--no-sandbox"],
       ignoreHTTPSErrors: false
     },
+    headers: {
+      Cookie: 'highcontrast=yes'
+    },
     // full coverage, can be turned off to only report outright errors
     includeWarnings: true,
     includeNotices: true,

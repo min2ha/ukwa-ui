@@ -13,7 +13,7 @@ $(document).ready(function(e) {
 	if ($.cookie('highcontrast') == "yes") {
 		$("body").addClass("theme-dark");
 	} else {
-		$("body").addClass("theme-dark");
+		$("body").addClass("theme-light");
 	}
 
 	// When the element is clicked
