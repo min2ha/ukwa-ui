@@ -28,9 +28,9 @@ services:
       - "8984:8983"
 
   pa11y:
-    image: min2ha/docker-pa11y
+    image: min2ha/docker-pa11y:latest
     container_name: pa11y
-    command: bash -c "while ! curl -s ui:8080 > /dev/null;
+    command: bash -c "while ! nc -z ui 8080;
       do
       echo sleeping;
       sleep 3;

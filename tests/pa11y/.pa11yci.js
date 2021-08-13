@@ -2,6 +2,11 @@
 // See pa11y-ci config options at https://github.com/pa11y/pa11y-ci#usage
 module.exports = {
   standard: 'WCAG2AA',
+  page: {
+    headers: {
+      Cookie: 'highcontrast=yes'
+    }
+  },
   defaults: {
     chromeLaunchConfig: {
       // this is needed to run in docker
