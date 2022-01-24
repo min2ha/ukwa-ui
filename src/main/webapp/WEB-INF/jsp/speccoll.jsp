@@ -60,6 +60,10 @@
         </div>
 
     </div>
+    <div class="row my-5">
+        <h4 class="col-5 align-items-end ml-4">Current Category selected:</h4>
+        <h4 class="col-7 bold align-items-start" id="selected_category"></h4>
+    </div>
 
     <%-- category top level cards --%>
     <div class="row">
@@ -70,12 +74,12 @@
             <c:forEach var="category" items="${topLevelCategoriesList.entrySet()}">
 
                 <div class="col-lg-3 col-md-6 col-sm-12 pointer top-category-card">
-                    <div id="id_${category.key}" class="card mb-4 ml-3 mr-3 top-category-card-v2">
-                        <img class="card-img-top center" id="id_image_id_${category.key}" src="img/categories/<c:out value="${category.key}"/>.png" alt="<c:out value="${category.key}"/>">
+                    <div id="id_${category.key}" class="card mb-4 ml-3 mr-3 top-category-card-v2" style="border-radius: 10%">
+                        <img class="card-img-top center" id="id_image_id_${category.key}" style="border-radius: 10% 10% 1% 1%;" src="img/categories/<c:out value="${category.key}"/>.png" alt="<c:out value="${category.key}"/>">
 
-                        <div class="card-img-overlay">
+                        <div class="card-body">
                             <div class="card-footer">
-                                <div class="text-uppercase bold" style="color: white!important; text-shadow: 1px 1px 2px black, 3px 3px 25px black, 2px 2px 15px black;position:absolute;bottom:2px;left:5px;"><spring:message code="category.title.${category.key}" /></div>
+                                <div class="text-uppercase bold" style="color: white!important; text-shadow: 1px 1px 2px black, 1px 1px 2px black, 1px 1px 5px black;position:absolute;bottom:2px;left:15px;"><spring:message code="category.title.${category.key}" /></div>
                             </div>
 
 <%--                                                            <a href="#" class="stretched-link" target="_blank"></a>--%>
@@ -199,11 +203,12 @@ $(document).ready(function(e) {
     array.push("${item}");
     </c:forEach>
 
-    var current_2_id = 'id_2222';
+    var current_2_id = 'id_2222'; //all categories aka all collections
     var onclick_category = false;
     var previous_2_id = null;
 
     if (current_2_id !== null && current_2_id !== undefined && onclick_category !== true){
+
         $('#top-collection-list-2-'+previous_2_id).removeClass("active");
         $('#top-collection-list-2-'+current_2_id).addClass("active");
 
@@ -212,9 +217,7 @@ $(document).ready(function(e) {
         $('#id_image_'+previous_2_id).removeClass('border border-danger border-3 card_hover');//.css({"filter":blur(35px)});//filter: grayscale(100%);
         $('#id_image_'+current_2_id).addClass('border border-danger border-3 card_hover');
 
-
         console.log('new - test current ID = ', 'id_image_'+current_2_id);
-
         previous_2_id = current_2_id;
     }
 
@@ -222,6 +225,8 @@ $(document).ready(function(e) {
 
         onclick_category = true;
         console.log('previous_2_id = ', previous_2_id);
+        $("#selected_category").text('new category');
+
 
         var current_2_id = $(this).attr('id');
         console.log('current_2_id = ', current_2_id);
@@ -229,13 +234,10 @@ $(document).ready(function(e) {
         $('#top-collection-list-2-'+previous_2_id).removeClass("active");
         $('#top-collection-list-2-'+current_2_id).addClass("active");
 
-
-
         $(".top-category-card-v2").addClass("w-75");
 
         $('#id_image_'+previous_2_id).removeClass('border border-danger border-3 card_hover');//.css({"filter":blur(35px)});//filter: grayscale(100%);
         $('#id_image_'+current_2_id).addClass('border border-danger border-3 card_hover');
-
 
         console.log('id image current = ', 'id_image_'+current_2_id);
 
