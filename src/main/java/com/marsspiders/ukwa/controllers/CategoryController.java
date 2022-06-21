@@ -77,6 +77,8 @@ public class CategoryController {
         }
 
         mapCollectionDTO = new HashMap<>();
+        Random random = new Random();
+
         //all collections
         for (Map.Entry<String, List<PivotField>> pivotEntry : pivotEntryList) {
             Iterator iterator;  //Iterator<PivotField>
@@ -84,7 +86,7 @@ public class CategoryController {
 
             for (int y=0; y < pivotEntry.getValue().size();y++) {
                 if (pivotEntry.getValue().get(y).getPivot() != null) {
-                    log.info("List [" + y + "] Pivot size = " + pivotEntry.getValue().get(y).getPivot().size());
+                    log.debug("List [" + y + "] Pivot size = " + pivotEntry.getValue().get(y).getPivot().size());
 
                     indx_deep = 0;
                     charSet = new HashSet<>();
@@ -112,10 +114,10 @@ public class CategoryController {
 //                                log.info("matcher : index = " + k++ +", group = " + m.group(2));
 //                                log.info("matcher : index = " + k++ +", group = " + m.group(3));
 
-
                             mapCollectionDTO.put(
                                     //add only collectionArea ID, title cannot be extracted from SOLR query
-                                    pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString(),
+                                    //13+Id: all collection list must contain unique collections, so starting part remains the same i.e. 13
+                                    13 + pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString(),
                                     new CollectionDTO(
 
                                             pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString(),
@@ -131,7 +133,6 @@ public class CategoryController {
                             indx_deep++;
                         } else
                             iterator.next();
-                        log.info("mapCollectionDTO size = "+mapCollectionDTO.size());
                     }
                     //add all collections that belong to category
                     // && TODO: sub-collections? - Need to concentrate on lists from ACT in JSON
@@ -139,9 +140,7 @@ public class CategoryController {
             }
 
             //List<HashMap<String, HashMap<String, CollectionDTO>>>
-
             //Final add map of
-
         }
 
         map3 = new HashMap<>();
@@ -152,7 +151,6 @@ public class CategoryController {
                                 Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, LinkedHashMap::new)));
 
         listOfMapsOfItemsOfCategories3.add(map3);
-        
 
         //collection areas
         for (Map.Entry<String, List<PivotField>> pivotEntry : pivotEntryList) {
@@ -192,7 +190,8 @@ public class CategoryController {
 
                             mapCollectionDTO.put(
                                     //add only collectionArea ID, title cannot be extracted from SOLR query
-                                    pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString(),
+                                    //random + Id: collection list must contai unique collections, so starting part remains unique i.e. random
+                                    (random.nextInt(90)+10) + pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString(),
                                     new CollectionDTO(
 
                                             pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString(),
@@ -224,8 +223,6 @@ public class CategoryController {
                                 .sorted(Comparator.comparing(collDTO -> collDTO.getValue().getName()))
                                 .collect(Collectors.toMap(
                                         Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, LinkedHashMap::new)));
-
-                log.info("count [" + pivotEntry.getValue().get(y).getValue().toString() + "]" + mapCollectionDTO.entrySet().stream().count());
                 //Final add map of
                 listOfMapsOfItemsOfCategories3.add(map3);
                 listOfAlphabetical.add(charSet);

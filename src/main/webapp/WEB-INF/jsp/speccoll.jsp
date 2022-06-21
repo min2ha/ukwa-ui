@@ -119,21 +119,21 @@
                                 <li class="list-group-item col-lg-6 col-md-6 col-sm-12">
 
                                     <div class="media">
-                                        <a href="collection/<c:out value="${collection.key}"/>" class="collection-link">
-                                            <img style="width:160px;height:auto;" alt="<c:out value="${collection.value.name}"/>" src="img/collections/collection_<c:out value="${collection.key}"/>.png"/>
+                                        <a href="collection/<c:out value="${fn:substring(collection.key, 2, 7)}"/>" class="collection-link">
+                                            <img style="width:160px;height:auto;" alt="<c:out value="${collection.value.name}"/>" src="img/collections/collection_<c:out value="${fn:substring(collection.key, 2, 7)}"/>.png"/>
                                         </a>
                                         <div class="ml-3 media-body">
                                             <div class="row">
                                                 <div class="col-12 category-collection-search-result-ul">
-                                                    <a href="collection/<c:out value="${collection.key}"/>" class="collection-link">
+                                                    <a href="collection/<c:out value="${fn:substring(collection.key, 2, 7)}"/>" class="collection-link">
                                                         <h5><c:out value="${collection.value.name}"/></h5>
                                                     </a>
                                                 </div>
                                             </div>
 
                                             <div id="colmodule" class="collection-descr" >
-                                                <p id="collapseCollection-<c:out value="${collection.key}"/>" class="collapse text-justify text-muted small col-descr" data-content="tmp_data" aria-expanded="false"><c:out value="${collection.value.description}"/></p>
-                                                <a role="button" data-content="<spring:message code="categories.filter.results.showmore" />" class="collapsed showmoreless" data-toggle="collapse" href="#collapseCollection-<c:out value="${collection.key}"/>" aria-expanded="false" aria-controls="collapseCollection-<c:out value="${collection.key}"/>"></a>
+                                                <p id="collapseCollection-<c:out value="${fn:substring(collection.key, 2, 7)}"/>" class="collapse text-justify text-muted small col-descr" data-content="tmp_data" aria-expanded="false"><c:out value="${collection.value.description}"/></p>
+                                                <a role="button" data-content="<spring:message code="categories.filter.results.showmore" />" class="collapsed showmoreless" data-toggle="collapse" href="#collapseCollection-<c:out value="${fn:substring(collection.key, 2, 7)}"/>" aria-expanded="false" aria-controls="collapseCollection-<c:out value="${fn:substring(collection.key, 2, 7)}"/>"></a>
                                             </div>
 
                                         </div>
