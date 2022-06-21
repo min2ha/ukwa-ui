@@ -131,6 +131,7 @@ public class CategoryController {
                             indx_deep++;
                         } else
                             iterator.next();
+                        log.info("mapCollectionDTO size = "+mapCollectionDTO.size());
                     }
                     //add all collections that belong to category
                     // && TODO: sub-collections? - Need to concentrate on lists from ACT in JSON
@@ -151,8 +152,7 @@ public class CategoryController {
                                 Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, LinkedHashMap::new)));
 
         listOfMapsOfItemsOfCategories3.add(map3);
-
-
+        
 
         //collection areas
         for (Map.Entry<String, List<PivotField>> pivotEntry : pivotEntryList) {
@@ -190,9 +190,6 @@ public class CategoryController {
 //                                log.info("matcher : index = " + k++ +", group = " + m.group(2));
 //                                log.info("matcher : index = " + k++ +", group = " + m.group(3));
 
-
-
-
                             mapCollectionDTO.put(
                                     //add only collectionArea ID, title cannot be extracted from SOLR query
                                     pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString(),
@@ -228,6 +225,7 @@ public class CategoryController {
                                 .collect(Collectors.toMap(
                                         Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, LinkedHashMap::new)));
 
+                log.info("count [" + pivotEntry.getValue().get(y).getValue().toString() + "]" + mapCollectionDTO.entrySet().stream().count());
                 //Final add map of
                 listOfMapsOfItemsOfCategories3.add(map3);
                 listOfAlphabetical.add(charSet);
