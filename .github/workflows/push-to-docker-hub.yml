@@ -8,6 +8,7 @@ on:
       - master
       - dev
       - hotfix_141
+      - hotfix_142
 jobs:
   push_to_docker_hub:
     name: Push Docker image to Docker Hub
