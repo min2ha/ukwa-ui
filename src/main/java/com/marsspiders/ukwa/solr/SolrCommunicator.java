@@ -183,7 +183,7 @@ public class SolrCommunicator {
         query.set("facet.limit", "-1");
         query.set("facet.pivot.mincount", "1");
         query.set("wt", "json");
-        query.set("rows", "9999");
+        query.set("rows", "99999");
         query.set("fl",new String[]{"name,description"});
 
         HttpSolrClient solrClient = new HttpSolrClient.Builder(solrCollectionPath + "/solr/collections").build();

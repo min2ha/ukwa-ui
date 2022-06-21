@@ -84,6 +84,7 @@ public class CategoryController {
 
             for (int y=0; y < pivotEntry.getValue().size();y++) {
                 if (pivotEntry.getValue().get(y).getPivot() != null) {
+                    log.info("List [" + y + "] Pivot size = " + pivotEntry.getValue().get(y).getPivot().size());
 
                     indx_deep = 0;
                     charSet = new HashSet<>();
