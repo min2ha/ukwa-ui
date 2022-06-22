@@ -55,10 +55,8 @@ public class CategoryController {
 
     @RequestMapping(value = "", method = GET)
     public ModelAndView rootCategoriesPagev2(HttpServletRequest request) {
-        Locale locale = getLocale(request);
-
         NamedList<List<PivotField>> pivotEntryList = null;
-        HashMap<String, CollectionDTO> mapCollectionDTO = null;// new HashMap<>();
+        HashMap<String, CollectionDTO> mapCollectionDTO;// = null;// new HashMap<>();
         List<HashMap<String, HashMap<String, CollectionDTO>>> listOfMapsOfItemsOfCategories3 = new ArrayList<>();
         //Set<Character>
         HashMap<String, HashMap<String, CollectionDTO>> map3 = null;
@@ -79,14 +77,14 @@ public class CategoryController {
         mapCollectionDTO = new HashMap<>();
         Random random = new Random();
 
-        //all collections
+        //all collections --- separated
         for (Map.Entry<String, List<PivotField>> pivotEntry : pivotEntryList) {
             Iterator iterator;  //Iterator<PivotField>
             int indx_deep = 0;
 
             for (int y=0; y < pivotEntry.getValue().size();y++) {
                 if (pivotEntry.getValue().get(y).getPivot() != null) {
-                    log.info("List [" + y + "] Pivot size = " + pivotEntry.getValue().get(y).getPivot().size());
+                    log.info("--- List [" + y + "] Pivot size = " + pivotEntry.getValue().get(y).getPivot().size());
 
                     indx_deep = 0;
                     charSet = new HashSet<>();
@@ -114,6 +112,16 @@ public class CategoryController {
 //                                log.info("matcher : index = " + k++ +", group = " + m.group(2));
 //                                log.info("matcher : index = " + k++ +", group = " + m.group(3));
 
+                            log.info("mapCollectionDTO put KEY: " + pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString());
+//                            log.info("mapCollectionDTO put VALUE:" + pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString());
+//                            log.info("mapCollectionDTO put VALUE:" + pivotEntry.getValue().
+//                                    get(y).getPivot().
+//                                    get(indx_deep).getPivot().
+//                                    get(0).getPivot().
+//                                    get(0).getValue().toString());
+//                            log.info("mapCollectionDTO put VALUE:" + currDescr.substring(13).replaceAll("^\"|\"$", ""));//currDescr.substring(13).replaceAll("\\[(.*?)\\]", ""));
+
+                            //HashMap with all inclusive
                             mapCollectionDTO.put(
                                     //add only collectionArea ID, title cannot be extracted from SOLR query
                                     //13+Id: all collection list must contain unique collections, so starting part remains the same i.e. 13
@@ -127,7 +135,8 @@ public class CategoryController {
                                                     get(0).getPivot().
                                                     get(0).getValue().toString(),
                                             //m.find()?m.group(2):"no description",
-                                            currDescr.substring(13).replaceAll("\\[(.*?)\\]", ""),
+                                            //currDescr.substring(13).replaceAll("\\[(.*?)\\]", ""),
+                                            currDescr.substring(13),//.replaceAll("\\[(.*?)\\]|(?:^|\"\"$)", ""),
                                             "full description...",
                                             "alt Image"));
                             indx_deep++;
@@ -137,11 +146,12 @@ public class CategoryController {
                     //add all collections that belong to category
                     // && TODO: sub-collections? - Need to concentrate on lists from ACT in JSON
                 }
-            }
+            }//add collections to areas
 
             //List<HashMap<String, HashMap<String, CollectionDTO>>>
             //Final add map of
         }
+        log.info("mapCollectionDTO size after all SEPARATED collections : " + mapCollectionDTO.size());
 
         map3 = new HashMap<>();
         map3.put("2222",
@@ -150,6 +160,7 @@ public class CategoryController {
                         .collect(Collectors.toMap(
                                 Map.Entry::getKey, Map.Entry::getValue, (a, b) -> a, LinkedHashMap::new)));
 
+        //add 'All collections' map. Unique only, sorted!
         listOfMapsOfItemsOfCategories3.add(map3);
 
         //collection areas
@@ -157,6 +168,7 @@ public class CategoryController {
             Iterator iterator;  //Iterator<PivotField>
             int indx_deep = 0;
 
+            log.info("collection areas size (working on EXCLUDED in SOLR query) + 1 later (All): " + pivotEntry.getValue().size());
             for (int y=0; y < pivotEntry.getValue().size();y++)
             {
                 if (pivotEntry.getValue().get(y).getPivot() != null){
@@ -188,9 +200,18 @@ public class CategoryController {
 //                                log.info("matcher : index = " + k++ +", group = " + m.group(2));
 //                                log.info("matcher : index = " + k++ +", group = " + m.group(3));
 
+                            log.info("mapCollectionDTO 2 put KEY: " + pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString());
+//                            log.info("mapCollectionDTO 2 put VALUE:" + pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString());
+//                            log.info("mapCollectionDTO 2 put VALUE:" + pivotEntry.getValue().
+//                                    get(y).getPivot().
+//                                    get(indx_deep).getPivot().
+//                                    get(0).getPivot().
+//                                    get(0).getValue().toString());
+//                            log.info("mapCollectionDTO 2 put VALUE:" + currDescr.substring(13).replaceAll("^\"|\"$", ""));//currDescr.substring(13).replaceAll("\\[(.*?)\\]", ""));
+
                             mapCollectionDTO.put(
                                     //add only collectionArea ID, title cannot be extracted from SOLR query
-                                    //random + Id: collection list must contai unique collections, so starting part remains unique i.e. random
+                                    //random + Id: collection list must contains unique collections, so starting part remains unique i.e. random
                                     (random.nextInt(90)+10) + pivotEntry.getValue().get(y).getPivot().get(indx_deep).getValue().toString(),
                                     new CollectionDTO(
 
@@ -201,7 +222,8 @@ public class CategoryController {
                                                             get(0).getPivot().
                                                             get(0).getValue().toString(),
                                             //m.find()?m.group(2):"no description",
-                                            currDescr.substring(13).replaceAll("\\[(.*?)\\]", ""),
+                                            //currDescr.substring(13).replaceAll("\\[(.*?)\\]", ""),
+                                            currDescr.substring(13),//.replaceAll("^\"|\"$", ""),
                                             "full description...",
                                             "alt Image"));
                             indx_deep++;
@@ -216,6 +238,8 @@ public class CategoryController {
 
                 //List<HashMap<String, HashMap<String, CollectionDTO>>>
                 map3 = new HashMap<>();
+                log.info("add mapCollectionDTO size = "+ mapCollectionDTO.size() +", into COLLECTION AREA :"+ pivotEntry.getValue().get(y).getValue().toString());
+
                 map3.put(pivotEntry.getValue().get(y).getValue().toString(),
                         mapCollectionDTO
                                 .entrySet()
@@ -230,6 +254,7 @@ public class CategoryController {
 
         }
 
+
         ModelAndView mav = new ModelAndView("speccoll");
         mav.addObject("listOfMapsOfItemsOfCategories3", listOfMapsOfItemsOfCategories3);
         mav.addObject("alphabetSet", charSet);
@@ -239,48 +264,48 @@ public class CategoryController {
         return mav;
     }
 
-    private List<CollectionDTO> generateRootCollectionCategoriesDTOs(Locale locale) {
-
-        SolrSearchResult<CollectionInfo> test = searchService
-                .fetchRootCollectionsCategories();
-
-        log.info("--------- getFacetCounts : " + test.getFacetCounts());
-        log.info("--------- size : " + test.getResponseBody().getDocuments().size());
-
-        Map<String, CollectionDTO> rootCollections = searchService
-                .fetchRootCollectionsCategories()
-                .getResponseBody().getDocuments()
-                .stream()
-                .collect(Collectors
-                        .toMap(CollectionInfo::getId, collection -> toCollectionDTO(collection, true, locale)));
-
-        log.info("--------- map print : " );
-
-        for (Map.Entry<String, CollectionDTO> entry : rootCollections.entrySet()) {
-            System.out.println(entry.getKey() + "/" + entry.getValue().getName());
-        }
-
-        return null;//sortedCollectionDTOs;
-    }
+//    private List<CollectionDTO> generateRootCollectionCategoriesDTOs(Locale locale) {
+//
+//        SolrSearchResult<CollectionInfo> test = searchService
+//                .fetchRootCollectionsCategories();
+//
+//        log.info("--------- getFacetCounts : " + test.getFacetCounts());
+//        log.info("--------- size : " + test.getResponseBody().getDocuments().size());
+//
+//        Map<String, CollectionDTO> rootCollections = searchService
+//                .fetchRootCollectionsCategories()
+//                .getResponseBody().getDocuments()
+//                .stream()
+//                .collect(Collectors
+//                        .toMap(CollectionInfo::getId, collection -> toCollectionDTO(collection, true, locale)));
+//
+//        log.info("--------- map print : " );
+//
+//        for (Map.Entry<String, CollectionDTO> entry : rootCollections.entrySet()) {
+//            System.out.println(entry.getKey() + "/" + entry.getValue().getName());
+//        }
+//
+//        return null;//sortedCollectionDTOs;
+//    }
     //-------- cat
 
-    private CollectionDTO toCollectionDTO(CollectionInfo collectionInfo, boolean abbreviate, Locale locale) {
-        String id = collectionInfo.getId();
-        String parentId = collectionInfo.getParentId();
-        String name = collectionInfo.getName();
-        String fullDescription = collectionInfo.getDescription() != null
-                ? collectionInfo.getDescription().replaceAll("<[^>]*>", "")
-                : null;
-
-        String shortDescription = abbreviate
-                ? abbreviate(fullDescription, 60)
-                : fullDescription;
-
-        String defaultImageAltMessage = "";
-        String imageAltMessage = messageSource.getMessage(COLLECTION_ALT_MESSAGE_ID + id, null, defaultImageAltMessage, locale);
-
-        return new CollectionDTO(id, parentId, name, shortDescription, fullDescription, imageAltMessage, 0, 0, 0);
-    }
+//    private CollectionDTO toCollectionDTO(CollectionInfo collectionInfo, boolean abbreviate, Locale locale) {
+//        String id = collectionInfo.getId();
+//        String parentId = collectionInfo.getParentId();
+//        String name = collectionInfo.getName();
+//        String fullDescription = collectionInfo.getDescription() != null
+//                ? collectionInfo.getDescription().replaceAll("<[^>]*>", "")
+//                : null;
+//
+//        String shortDescription = abbreviate
+//                ? abbreviate(fullDescription, 60)
+//                : fullDescription;
+//
+//        String defaultImageAltMessage = "";
+//        String imageAltMessage = messageSource.getMessage(COLLECTION_ALT_MESSAGE_ID + id, null, defaultImageAltMessage, locale);
+//
+//        return new CollectionDTO(id, parentId, name, shortDescription, fullDescription, imageAltMessage, 0, 0, 0);
+//    }
 
     /*
     * http://localhost:38983/solr/collections/select?
@@ -299,40 +324,40 @@ public class CategoryController {
     *
     * */
 
-    private static List<String> parsePivotResult(final NamedList<List<PivotField>> pivotEntryList) {
-        final Set<String> outputItems = new HashSet<>();
-        for (final Map.Entry<String, List<PivotField>> pivotEntry : pivotEntryList) {
-            System.out.println("Key: " + pivotEntry.getKey());
-            pivotEntry.getValue().forEach((pivotField) -> {
-                renderOutput(new StringBuilder(), pivotField, outputItems);
-            });
-        }
-        final List<String> output = new ArrayList<>(outputItems);
-        Collections.sort(output);
-        return output;
-    }
+//    private static List<String> parsePivotResult(final NamedList<List<PivotField>> pivotEntryList) {
+//        final Set<String> outputItems = new HashSet<>();
+//        for (final Map.Entry<String, List<PivotField>> pivotEntry : pivotEntryList) {
+//            System.out.println("Key: " + pivotEntry.getKey());
+//            pivotEntry.getValue().forEach((pivotField) -> {
+//                renderOutput(new StringBuilder(), pivotField, outputItems);
+//            });
+//        }
+//        final List<String> output = new ArrayList<>(outputItems);
+//        Collections.sort(output);
+//        return output;
+//    }
 
-    private static void renderOutput(final StringBuilder sb, final PivotField field, final Set<String> outputItems) {
-        String HIERARCHICAL_FACET_SEPARATOR = "-->";
-        final String fieldValue = field.getValue() != null ? ((String) field.getValue()).trim() : null;
-        final StringBuilder outputBuilder = new StringBuilder(sb);
-        if (field.getPivot() != null) {
-            if (outputBuilder.length() > 0) {
-                outputBuilder.append(HIERARCHICAL_FACET_SEPARATOR);
-            }
-            outputBuilder.append(fieldValue);
-            outputItems.add(new StringBuilder(outputBuilder).append(" (").append(field.getCount()).append(")").toString());
-            field.getPivot().forEach((subField) -> {
-                renderOutput(outputBuilder, subField, outputItems);
-            });
-        } else {
-            if (outputBuilder.length() > 0) {
-                outputBuilder.append(HIERARCHICAL_FACET_SEPARATOR);
-            }
-            outputBuilder.append(fieldValue);
-            outputItems.add(outputBuilder.append(" (").append(field.getCount()).append(")").toString());
-        }
-    }
+//    private static void renderOutput(final StringBuilder sb, final PivotField field, final Set<String> outputItems) {
+//        String HIERARCHICAL_FACET_SEPARATOR = "-->";
+//        final String fieldValue = field.getValue() != null ? ((String) field.getValue()).trim() : null;
+//        final StringBuilder outputBuilder = new StringBuilder(sb);
+//        if (field.getPivot() != null) {
+//            if (outputBuilder.length() > 0) {
+//                outputBuilder.append(HIERARCHICAL_FACET_SEPARATOR);
+//            }
+//            outputBuilder.append(fieldValue);
+//            outputItems.add(new StringBuilder(outputBuilder).append(" (").append(field.getCount()).append(")").toString());
+//            field.getPivot().forEach((subField) -> {
+//                renderOutput(outputBuilder, subField, outputItems);
+//            });
+//        } else {
+//            if (outputBuilder.length() > 0) {
+//                outputBuilder.append(HIERARCHICAL_FACET_SEPARATOR);
+//            }
+//            outputBuilder.append(fieldValue);
+//            outputItems.add(outputBuilder.append(" (").append(field.getCount()).append(")").toString());
+//        }
+//    }
 
     @RequestMapping(value="/gettranscategoryname/{lang}/{categoryId}", method=RequestMethod.GET)
     @ResponseBody
