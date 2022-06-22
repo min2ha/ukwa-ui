@@ -77,6 +77,7 @@ public class CategoryController {
         mapCollectionDTO = new HashMap<>();
         Random random = new Random();
 
+        int counter = 0;
         //all collections --- separated
         for (Map.Entry<String, List<PivotField>> pivotEntry : pivotEntryList) {
             Iterator iterator;  //Iterator<PivotField>
@@ -84,13 +85,14 @@ public class CategoryController {
 
             for (int y=0; y < pivotEntry.getValue().size();y++) {
                 if (pivotEntry.getValue().get(y).getPivot() != null) {
-                    log.info("--- List [" + y + "] Pivot size = " + pivotEntry.getValue().get(y).getPivot().size());
+                    //log.info("--- List [" + y + "] Pivot size = " + pivotEntry.getValue().get(y).getPivot().size());
 
                     indx_deep = 0;
                     charSet = new HashSet<>();
 
                     iterator = pivotEntry.getValue().get(y).getPivot().stream().iterator();
                     while (iterator.hasNext()) {
+                        counter++; //for testing
 
                         if (pivotEntry.getValue().get(y).getPivot().get(indx_deep).getPivot() != null) {
 
@@ -136,7 +138,7 @@ public class CategoryController {
                                                     get(0).getValue().toString(),
                                             //m.find()?m.group(2):"no description",
                                             //currDescr.substring(13).replaceAll("\\[(.*?)\\]", ""),
-                                            currDescr.substring(13),//.replaceAll("\\[(.*?)\\]|(?:^|\"\"$)", ""),
+                                            currDescr.substring(0, currDescr.length() - 3).substring(13),//.replaceAll("\\[(.*?)\\]|(?:^|\"\"$)", ""),
                                             "full description...",
                                             "alt Image"));
                             indx_deep++;
@@ -151,7 +153,8 @@ public class CategoryController {
             //List<HashMap<String, HashMap<String, CollectionDTO>>>
             //Final add map of
         }
-        log.info("mapCollectionDTO size after all SEPARATED collections : " + mapCollectionDTO.size());
+        log.info("mapCollectionDTO size after all collections into 1 : " + mapCollectionDTO.size() + ", counter = " + counter);
+        counter = 0;
 
         map3 = new HashMap<>();
         map3.put("2222",
@@ -179,6 +182,7 @@ public class CategoryController {
 
                     iterator = pivotEntry.getValue().get(y).getPivot().stream().iterator();
                     while (iterator.hasNext()) {
+                        counter++;
 
                         if (pivotEntry.getValue().get(y).getPivot().get(indx_deep).getPivot()!=null){
 
@@ -223,7 +227,7 @@ public class CategoryController {
                                                             get(0).getValue().toString(),
                                             //m.find()?m.group(2):"no description",
                                             //currDescr.substring(13).replaceAll("\\[(.*?)\\]", ""),
-                                            currDescr.substring(13),//.replaceAll("^\"|\"$", ""),
+                                            currDescr.substring(0, currDescr.length() - 3).substring(13),//.replaceAll("^\"|\"$", ""),
                                             "full description...",
                                             "alt Image"));
                             indx_deep++;
@@ -253,6 +257,7 @@ public class CategoryController {
             }
 
         }
+        log.info("all collections count SUM, counter value = " + counter);
 
 
         ModelAndView mav = new ModelAndView("speccoll");
