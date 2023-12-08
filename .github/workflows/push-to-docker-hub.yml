@@ -8,6 +8,15 @@ on:
       - master
       - dev
 jobs:
+  security:
+    name: workflow for Maven using Snyk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
   push_to_docker_hub:
     name: Push Docker image to Docker Hub
     # This uses the default metadata-action configuration, see https://github.com/docker/metadata-action
