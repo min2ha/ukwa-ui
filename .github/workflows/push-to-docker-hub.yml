@@ -13,10 +13,10 @@ jobs:
     name: Run unit tests and SAST scan on the source code 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 8
+    - name: Set up JDK 11 (as 8 not working)
       uses: actions/setup-java@v2
       with:
-        java-version: '8'
+        java-version: '11'
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven cloud
