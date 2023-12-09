@@ -9,7 +9,7 @@ on:
       - dev
 jobs:
   security:
-    name: DEVSECOPS Step 1. Test Workflow for Maven using Snyk
+    name: DEVSECOPS Step 1. Workflow for Maven using Snyk
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
