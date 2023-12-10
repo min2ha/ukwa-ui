@@ -8,7 +8,7 @@ on:
       - dev
 jobs:
   build:
-    name: Build and analyze
+    name: Build and analyze - Sonar
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
