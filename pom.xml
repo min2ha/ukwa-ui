@@ -11,6 +11,11 @@
     <packaging>war</packaging>
     <name>Marsspiders UKWA</name>
     <description>UKWA initial project</description>
+         
+    <properties>
+        <sonar.organization>min2ha</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    </properties>
 
     <dependencies>
         <dependency>
