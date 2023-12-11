@@ -45,6 +45,39 @@ jobs:
         uses: snyk/actions/maven@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  image_scan:
+   name: Build Image and Run Image Scan
+   runs-on: ubuntu-latest
+
+   steps:
+   - name: Checkout code
+     uses: actions/checkout@v2
+
+   - name: Set up Docker
+     uses: docker-practice/actions-setup-docker@v1
+     with:
+      docker_version: '20.10.7'
+
+   - name: Build Docker Image
+     run: docker build -f Dockerfile -t myapp:latest .
+
+ #  - name: Docker Scout Scan
+ #    run: |
+ #      curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
+ #      sh install-scout.sh
+ #      docker scout quickview
+ #      docker scout cves
+   - name: Docker Scout
+  # You may pin to the exact commit or the version.
+  # uses: docker/scout-action@b7413c99043c2a9131c0fa39cedaece80f285788
+     uses: docker/scout-action@v1.2.2
+     with:
+      dockerhub-user: ${{ secrets.DOCKER_HUB_USERNAME }}
+      # Docker Hub PAT
+      dockerhub-password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      command: quickview,cves
+       
   push_to_docker_hub:
     name: Push Docker image to Docker Hub
     # This uses the default metadata-action configuration, see https://github.com/docker/metadata-action
