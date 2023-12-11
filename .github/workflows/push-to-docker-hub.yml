@@ -77,7 +77,8 @@ jobs:
       # Docker Hub PAT
       dockerhub-password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       command: quickview,cves
-       
+      only-severities: critical,high
+ 
   push_to_docker_hub:
     name: Push Docker image to Docker Hub
     # This uses the default metadata-action configuration, see https://github.com/docker/metadata-action
