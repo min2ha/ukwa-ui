@@ -8,7 +8,7 @@ on:
       - dev
 jobs:
   SAST:
-    name: SAST (with Sonar). Build and analyze.
+    name: SAST scan (with Sonar). Build and analyze.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -37,7 +37,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=min2ha_ukwa-ui
   SCA-1:
-    name: SCA - Software Composition Analysis scan. Workflow for Maven using Snyk
+    name: SCA scan - Software Composition Analysis scan. Workflow for Maven using Snyk
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -46,7 +46,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
   SCA-2:
-    name: SCA - Software Composition Analysis scan. Collect artefact.
+    name: SCA scan - Software Composition Analysis scan. Collect artefact.
     needs: [SAST]
     runs-on: ubuntu-latest
     steps:
