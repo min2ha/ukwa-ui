@@ -36,18 +36,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=min2ha_ukwa-ui
-  SCA-1:
-    name: SCA scan - Software Composition Analysis scan. Workflow for Maven using Snyk
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/maven@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  SCA-2:
+  SCA:
     name: SCA scan - Software Composition Analysis scan. Collect artefact.
-    needs: [SAST]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -64,7 +54,6 @@ jobs:
           sarif_file: snyk.sarif
   image_CVE_scan:
    name: CVE inspection. (Common Vulnerabilities and Exposures). Build Image and Run Image Scan
-   needs: [SCA-2]
    runs-on: ubuntu-latest
 
    steps:
@@ -98,7 +87,7 @@ jobs:
  
   push_to_docker_hub:
     name: Push Docker image to Docker Hub
-    needs: [SAST,SCA-2,image_CVE_scan]
+    needs: [SAST,SCA,image_CVE_scan]
     # This uses the default metadata-action configuration, see https://github.com/docker/metadata-action
     # Pushes to master should build `ukwa/ukwa-ui:master`, pushes to dev should build `ukwa/ukwa-ui:dev`, pushes from forks should build e.g. `forker/ukwa-ui:master`.
     runs-on: ubuntu-latest
