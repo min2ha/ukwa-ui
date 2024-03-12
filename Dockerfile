@@ -1,8 +1,6 @@
 FROM maven:3-jdk-8 AS build-env
 
 # Build under maven
-MAINTAINER Mindaugas Vidmantas "mindaugas.vidmantas@bl.uk"
-
 COPY pom.xml /ukwa-ui/pom.xml
 COPY src /ukwa-ui/src
 
